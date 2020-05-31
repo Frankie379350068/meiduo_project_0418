@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.users',  #注册子应用users
+
+    # 添加 django-cors-headers 使其可以进行 cors 跨域
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +52,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+# 添加跨域的白名单(代码拷贝CV，不要手敲)
+CORS_ORIGIN_WHITELIST = [
+    'http://www.meiduo.site:8080',
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
+
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'meiduo_mall.urls'
 
