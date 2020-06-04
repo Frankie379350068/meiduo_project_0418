@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, register_converter
-from meiduo_mall.utils.converters import UsernameConverter
+from meiduo_mall.utils.converters import UsernameConverter, MobileConverter
 
 #  在总路由中注册自定义的路由转换器，register_converter(自定义路由转换器, '别名')
 register_converter(UsernameConverter,'username')
-
+register_converter(MobileConverter,'mobile')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.users.urls')),
+    path('', include('apps.verifications.urls')),
 ]
