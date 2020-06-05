@@ -46,7 +46,7 @@ class SmsCodeView(View):
         # redis_conn.setex('sms_%s' % mobile, 300, sms_code)
         # redis_conn.setex('send_flag_%s' % mobile, 60, 1) # *小细节：设置send_flag_mobile，标识，防止恶意用户再次刷新页面就可以频繁再次发送短信
         # *小细节：创建pipline管道提升redis读写性能
-        pl = redis_conn.pipline()
+        pl = redis_conn.pipeline()
         pl.setex('sms_%s' % mobile, 300, sms_code)
         pl.setex('send_flag_%s' % mobile, 60, 1)
         pl.execute()
@@ -56,7 +56,7 @@ class SmsCodeView(View):
         #  用户交互-->美多商城-->发送短信-->响应结果 + 倒计时， 其中发送的短信是一个耗时操作。
         #  所以，应该做异步处理，把相应结果+倒计时解耦出来，展示给用户应该是先计时，增强用户体验
         # 异步函数.delay()
-        ccp_send_sms_code(mobile, sms_code)
+        ccp_send_sms_code.delay(mobile, sms_code)
         # 4.响应结果
         return http.JsonResponse({'code': 0, 'errmsg': 'ok'})
 
